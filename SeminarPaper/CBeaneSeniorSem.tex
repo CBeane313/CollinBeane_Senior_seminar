@@ -186,7 +186,7 @@ of a greater biologging system.
 \subsection{Sensor Devices}
 \label{subsec:Sensor Devices}
 
-The sensor devices of an IoT based biologging system falls within the perception layer of the IoT 
+The sensor devices, commonly referred to as tags, of an IoT based biologging system falls within the perception layer of the IoT 
 structure discussed in section ~\ref{subsec:What is the Internet of Things}. This means it is responsible 
 for interacting with the environment to collect data and sending it to the network layer. To complete these 
 tasks, four main hardware components work together: antenna, microcontroller, battery and of course, sensor(s). 
@@ -199,7 +199,7 @@ uses, the frequencies relevant to the biologging systems discussed in this paper
 ~\ref{subsec:Traditional Wifi (WLAN)} and ~\ref{subsec:Low Power Wide Area Networks (LPWAN)}.
 A microcontroller is necessary in a sensor device so that all the components can work together effectively. The 
 microcontroller is effectively a small computer that receives the data that is collected by the sensors and in 
-many cases supplies power to the sensors as well. When the microcontroller recieves the data from the sensors 
+many cases supplies power to the sensors as well. When the microcontroller receives the data from the sensors 
 it is responsible for encrypting and packaging it into the required format to be sent to the attached antenna 
 for transmission to a gateway device. A visual aide for the microcontroller acting as a hub for the other 
 components can be seen in figure ~\ref{fig:WildFi_microcontroller}, [1], where an ESP32 Pico D4 is used as the 
@@ -270,35 +270,29 @@ of the WildFi devices used as a foundation for a gateway device can store data l
 
 The networking of a IoT based biologging system is crucial in ensuring safe and
 efficient data transmission. The networks used in a biologging system
-are responsible for transmitting data from the sensor device to the application
+are responsible for transmitting data from the perception layer to the application
 layer, and are also responsible for ensuring that the data is transmitted
-safely and securely. The two most popular types of networking protocols used in
-biologging systems are Low Power Wide Area Networks (LPWAN) and Traditional Wifi.
-These two types of networks have their own advantages and disadvantages, and
-the choice of which network to use is dependent on the specific use case. No
-matter what method is used, the networking must be able to transmit data over 
-long distances, and they must be able to do so in a secure way. The security 
+safely and securely. LPWAN and WLAN are two types of networks that are commonly used for 
+biologging and each have their own advantages and disadvantages; the choice of which 
+network to use is dependent on the specific use case. These networks must be able to transmit data over 
+long distances, and they must be able to do so securely. The security 
 of the data is especially important in a biologging system, as the data being 
 transmitted is often sensitive and can be used to track the location of an animal, 
 which in the hand of an illegal hunter, could be disastrous.
 
-\subsection{Low Power Wide Area Networks (LPWAN)}
-\label{subsec:Low Power Wide Area Networks (LPWAN)}
+\subsection{Low Power Wide Area Networks (LPWANs)}
+\label{subsec:Low Power Wide Area Networks (LPWANs)}
 
-LPWAN networks provide a few benefits compared to a traditional mesh wifi network, 
-the primary benefit being that LPWAN networks are able to transmit data over much 
-longer distances than a traditional mesh wifi network. This is especially important 
-in a biologging system, as the animals being tracked are often in vast, remote areas 
-where a 200m range would not be sufficient. LPWAN networks typically utilize sub 
-GHz frequencies and ultra-narrow band modulation to transmit data over long distances
-\cite{yousuf2018throughput}. Proprietary LPWAN networks like the SigFox network are 
-popular and designed to handle up to a million IoT devices using only a single gateway. 
-These services are subscription based, and the cost of the service is based on the 
-number of devices that are used in the network. On the other hand, there are LPWAN 
-standards that exist to allow in house development of an LPWAN network. The 
-LoRaWAN protocol is one of the most popular LPWAN standards, and it is used by 
-many to implement their own LPWAN networks\cite{LoRa_Alliance®_2023}. Both of these 
-network solutions are explored further in subsections \ref{subsec:SigFox} and 
+LPWAN provides a many benefits compared to WLAN, 
+the primary benefits being that LPWANs are able to transmit data over much 
+longer distances than WLANs with lower power consumption. This is especially beneficial 
+in a biologging system, as the animals being tracked are often in vast, remote areas with battery powered sensor devices. 
+LPWAN networks utilize sub 1GHz frequencies that require much less energy to transmit signals \cite{yousuf2018throughput}. LPWANs use 
+unlicensed industrial, scientific and medical radio frequencies (ISM): these frequencies 
+are set aside by governments across the globe for industrial, scientific and medical use. 
+LPWANs utilize frequency modulation techniques in order to achieve ranges upwards of 40km and 
+low power consumption. The SigFox proprietary network and LoRa standards based networks are 
+two popular LPWANs that are explored further in subsections \ref{subsec:SigFox} and 
 \ref{subsec:LoRa}.
 
 \subsubsection{SigFox}
@@ -321,17 +315,10 @@ to be sent instead\cite{wild2023multi}.
   \caption{SigFox network infrastructure\cite{wild2023multi}}
   \label{fig:SigFox_infrastructure}
 \end{figure}
-Ultra-Narrow bands (UNB) are used in the SigFox 
-network and many other LPWAN networks, which allows for the transmission of data
-over long distances, and the use of UNB also allows for the use of low power
-transmitters, which is important in a biologging system, as the devices are
-often attached to animals and must be as small and light as possible.
-UNB works by using a low radio frequency(868.034MHz to 868.226MHz), and transmits data three 
-times on different channels at different times, which ensures a message is received 
-and robustness to interferences\cite{LavricSigfoxCommunication}. One of the greatest 
-benefits of UNB is that it allows for the use of low power transmitters, which are able 
-to have incredibly long battery lives. Using the specifications of SigFox's UNB 
-network, a node is able to send 140 packets per day, and the power consumption is 
+SigFox uses frequency hopping modulation which transmits data three 
+times at different frequency channels at different times, which ensures a message is received 
+and robustness to interferences \cite{LavricSigfoxCommunication}. Using the specifications of SigFox's 
+network, a sensor device is able to send 140 packets per day with power consumption  
 between 19 and 49 mA, two AAA batteries are able to power a node up to 6.5 years
 \cite{LavricSigfoxCommunication}. Because SigFox is a proprietary network, end users 
 do not maintain the base stations or connection to the SigFox cloud: they only need to 
@@ -342,63 +329,54 @@ is shown in Figure ~\ref{fig:SigFox_infrastructure}.
 \subsubsection{LoRa}
 \label{subsec:LoRa}
 
-The LoRa and SigFox networks have many similarities in how they are structured 
-and operated, however there are some key differences. The transmission modulation 
-technique used by LoRa is called CHIRP(Compressed High Intensity Radar Pulse) spread 
-spectrum, and it is different from the frequency hopping technique that the SigFox 
-network uses. Where frequency hopping transmits signals at a constant frequency before 
-hopping to a different frequency, chirp modulates by increasing or decreasing it's 
-frequency over time, this can be done both linearly or not\cite{ghoslya2017lora}. The 
+LoRa is a standards based LPWAN; this means that sensor and gateway devices can be self developed and deployed 
+as long as the LoRa alliance standards are followed \cite{LoRa_Alliance®_2023}; There are also public LoRa networks 
+available for use in the case where a user just wants to design the sensor device.
+The LoRa standards utilize CHIRP (Compressed High Intensity Radar Pulse) spread 
+spectrum transmission modulation. CHIRP is different from the frequency hopping technique that the SigFox 
+network uses. Instead of transmitting at a constant frequency and then hopping to a different frequency, 
+CHIRP modulates by increasing or decreasing it's frequency over time, this can be done both linearly or not \cite{ghoslya2017lora}. The 
 spreading factor determines how quickly this modulation takes place; LoRa uses spreading 
 factors SF7 to SF12, the larger the spreading factor, the slower the modulation.
 How these spreading factors compare to each other is shown in Figure ~\ref{fig:Chirp}. 
 The main tradeoffs between spreading factors is the range and data rate of the network, as the 
-spreading factor increases, the range of the network increases, but the data rate decreases\cite{erturk2019survey}. 
-The spreading factor then becomes a critical factor in the design of a LoRa network, as 
-the spreading factor is directly related to the range and data rate of the network, so it should 
-be chosen wisely to fit the needs of the specific use case. Because the frequency is constantly 
-changing, chirp is able to tolerate interference better than that of the frequency hopping 
-technique that the SigFox network uses.
-
+spreading factor increases, the range of the network increases, but the data rate decreases \cite{erturk2019survey}.
 \begin{figure}[htbp]
   \centering
   \fbox{\includegraphics[width=.9\columnwidth]{images/Chirp.png}}
   \caption{Chirp Spread Spectrum Spreading factors\cite{ghoslya2017lora}}
   \label{fig:Chirp}
 \end{figure}
+The spreading factor then becomes a critical factor in the design of a LoRa network, as 
+the spreading factor is directly related to the range and data rate of the network, so it should 
+be chosen wisely to fit the needs of the specific use case. Because the frequency is constantly 
+increasing or decreasing, chirp is able to tolerate interference better than that of the frequency hopping 
+technique that the SigFox network uses.
 
-\subsection{Traditional Wifi (WLAN)}
-\label{subsec:Traditional Wifi (WLAN)}
+\subsection{Wireless Local Area Networks (WLAN)}
+\label{subsec:Wireless Local Area Networks (WLAN)}
 
-A more traditional Wifi network is another method that is used by some companies to 
-implement biologging systems. There are some useful benefits to using a traditional 
-Wifi network over an alternative like LoRa or LPWAN; The biggest of which is data 
-transfer rate. However, because traditional Wifi uses 2.4/5/6 GHz frequencies, the range is much more limited 
+A WLAN is another method that is used by some ecologists to 
+implement biologging systems. There are some useful benefits to using a WLAN over an LPWAN; The biggest of which is data 
+transfer rate. However, because WLAN uses 2.4/5/6GHz frequencies, the range is much more limited 
 than that of a LPWAN network, and the power consumption is higher. The WildFi biologging system designed by 
 Timm Wild and his colleagues is just one example of a device that uses traditional 
-WLAN to collect data from a biologging device. Wild is also the leading member of the 
+WLAN to collect data from a biologging device. Wild is also a leading member of the 
 team that studied the use of the SigFox network for a IoT based biologging system, and 
 claimed that the data transmission capacity was one of the reasons that they chose to 
-investigate the use of a traditional Wifi network for biologging\cite{wild2023internet}. 
+investigate the use of a WLAN for biologging \cite{wild2023internet}. 
 The WildFi tags and others like it, connect and communicate by using a traditional wireless 
-local area network (WLAN), which provides a versatile way for tags to offload collected data. 
-As seen in Figure ~\ref{fig:wild-fi_IoT_diagram}, the WildFi tag has the capability to 
-connect to a WLAN router, smartphone hotspot, specially designed gateway, and more.
+routers, smartphone hotspots or homemade gateway devices, which provides a versatile way for tags to offload collected data; 
+these capabilities can be seen in Figure ~\ref{fig:wild-fi_IoT_diagram}.
 \begin{figure}[htbp]
   \centering
-  \fbox{\includegraphics[width=.9\columnwidth]{images/WildFi_IoT.jpg}}
+  \fbox{\includegraphics[width=.8\columnwidth]{images/WildFi_IoT.jpg}}
   \caption{Wild-fi IoT infrastructure overview \cite{wild2023internet}}
   \label{fig:wild-fi_IoT_diagram}
 \end{figure}
-When the tags establish a connection to one of these devices, data is packaged, encrypted, 
-and transmitted to the receiving device. From there, the data can either be stored on device 
-to be physically collected, or uploaded to a remote database. When connected to a ESP32 CAM 
-gateway and the data is stored locally, a transmission rate of 230 kByte/s can be achieved at 
-a distance up to 200m and only consume 108mA using a WildFi tag\cite{wild2023internet}. This 
-is more power consumption than a LPWAN based device, however the energy cost per byte 
-transmitted is lower than a LPWAN based device. Wild et. al claim that using a traditional 
-Wifi network with a logging device that has a 70mAh battery and a small solar panel, data can 
-be transmitted 24 hours a day for an entire lifetime of an animal\cite{wild2023internet}.
+WLAN biologging have higher power consumption than a LPWAN based system, however the energy cost per byte 
+transmitted is lower than a LPWAN based device, and Wild et. al claim that using a logging device that has a 
+70mAh battery and a small solar panel, data can be transmitted 24 hours a day for an entire lifetime of an animal \cite{wild2023internet}.
 
 \subsection{Security}
 \label{subsec:Security}
@@ -407,35 +385,35 @@ The security of these networks is a critical factor in the design of a biologgin
 the data being transmitted is often sensitive and can be used to track the location of an animal, 
 which in the hand of an illegal hunter, could be disastrous. While much of the security of the 
 data is in the design of the physical device and it's software, the networks being used also need to 
-be secure and safe. The security of the physical device is important in the event that a node 
-device is lost or stolen.
+be secure and safe. The security of the physical device is important in the event that a sensor 
+device is lost or stolen; typically, this is done by having per device keys to ensure that if a 
+device is compromised, it won't hurt any other devices on the network.
 
 \subsubsection{SigFox and LoRa Security}
 \label{subsec:SigFox and LoRa Security}
 
 Both the SigFox and LoRa network ensure safe data transmission by using AES (Advanced Encryption Standard) 
 128 for end-to-end encryption. With this encryption method, a 128 bit key is used to encrypt the data from 
-node device and a key is shared with the application server to so that it can decrypt the data\cite{AES128IoT}. 
-This ensures that the data is encrypted at the source, and the data is decrypted at the destination, and 
-the data is encrypted in transit. This is important for the security of the data, as it prevents the data 
-from being readable by anyone who has access to the data, and it also prevents the data from being 
-tampered with in transit. There are many benefits to using AES 128 for end-to-end encryption, including 
+sensor device and a key is shared with the application server so that it can decrypt the data \cite{AES128IoT}. 
+This ensures that the data is encrypted at the source, encrypted in transit, and decrypted at the destination. 
+This is important for the security of the data, as it prevents the data 
+from being readable by anyone who has access to the data. There are many benefits to using AES 128 for end-to-end encryption, including 
 it's proven track record for being secure and efficient. Compared to other encryption methods, AES 128 
 has a small encryption key which makes it less computationally intensive; This leads into another reason why 
 it was chosen for use in these two LPWAN networks. Due to it being computationally efficient, it is 
 a great choice for a system designed around being low power. For a deeper dive into AES 128 encryption and 
-how it is used in LPWAN networks refer to Kun-Lin Tsai's article on the matter\cite{AES128IoT}.
+how it is used in LPWAN networks refer to Kun-Lin Tsai's article on the matter \cite{AES128IoT}.
 
-\subsubsection{Traditional Wifi (WLAN) Security}
-\label{subsec:Traditional Wifi (WLAN) Security}
+\subsubsection{WLAN Security}
+\label{subsec:WLAN Security}
 
 The security mechanisms of a IoT based biologging device that uses a traditional Wifi network can vary 
 depending on the developer of each device and their own preference on how to safely transmit data to the gateway 
-device. In the case of the WildFi devices discussed in section ~\ref{subsec:Traditional Wifi (WLAN)}, data 
-transmissions are encrypted with WPA2 and HTTPS\cite{wild2023internet}. These two methods allow for ease of 
+device. In the case of the WildFi devices discussed in section ~\ref{subsec:Wireless Local Area Networks (WLAN)}, data 
+transmissions are encrypted with WPA2 and HTTPS \cite{wild2023internet}. These two methods allow for ease of 
 use for the developer because they are widely supported by most WLAN devices that would be used as gateway 
-devices. WPA2 and HTTPS, similar to the LPWAN networks, uses AES 128 encryption, this provides the same 
-benefits as previously discussed\cite{WPA2Moissinac}. 
+devices. WPA2 and HTTPS, similar to the LPWAN networks, uses AES 128 encryption to some extent, this provides the same 
+benefits as previously discussed \cite{WPA2Moissinac}. 
 
 \subsection{Comparison and Selection Criteria}
 \label{subsec:Protocol Comparison and Selection Criteria}
@@ -446,14 +424,14 @@ important when accessing these networks for capabilities as IoT network solution
 life and security will be the focus of this comparison because they are the most critical for a biologging 
 system. Each network discussed in section ~\ref{sec:Networking} offers different levels of ability in each 
 of these categories: I rank their abilities in figure ~\ref{fig:network_barplot}. This figure gives a good 
-idea of how the three networks compare to each other in the five critical categories. Ultimately, the best 
-network will depend on availability of public networks and the technical knowhow and ability of the user. 
+idea of how the three networks compare to each other in the five critical categories. Table ~\ref{table:Network_Comparison_Table} 
+lays out how the three networks compare numerically: important rows in this table are the data rate and range rows.
+Ultimately, the best network will depend on availability of public networks and the technical knowhow and ability of the user. 
 If the user is not capable of creating their own network and devices, then a solution like SigFox or LoRa 
 may be a better choice. On the other hand, if a user can develop their own system, there are some serious 
 benefits to using LoRa or WLAN, mainly data rate and cost. Each use case for a biologging system is 
 unique and the network of choice will mostly depend on what is needed to meet the demands of the specific 
 use case.
-
 \definecolor{MineShaft}{rgb}{0.2,0.2,0.2}
 \definecolor{Silver}{rgb}{0.752,0.752,0.752}
 \begin{table}
@@ -472,15 +450,15 @@ use case.
   vlines,
   hline{1-2,7} = {-}{black},
 }
-                     & SigFox                             & LoRa                               & WiFi                  \\
+                     & SigFox                             & LoRa                               & WLAN                  \\
 Frequency            & 868MHz(EU) / 915MHz(NA) / 433MHz(AS) & 868MHz(EU) / 915MHz(NA) / 433MHz(AS) & 2.4GHz/ 5GHz/ 6GHz      \\
 Data Rate            & 100bps                             & 50kbps                             & 1840kbps              \\
 Maximum messages/day & 140                                & Unlimited                          & Unlimited             \\
 Range                & 10 km (urban), 40 km (rural)       & 5 km (urban), 20 km (rural)        & 200m                  \\
 Security             & AES-128                            & AES-128                            & WPA2/ HTTPS (AES128) 
 \end{tblr}
-\label{table:Network Comparison Table}
 \caption{Characteristics of explored networks, data from \cite{mekki2019comparative} and \cite{wild2023internet}}
+\label{table:Network_Comparison_Table}
 \end{table}
 
 \begin{figure}[htbp]
@@ -489,7 +467,6 @@ Security             & AES-128                            & AES-128             
   \caption{Rankings of discussed networks under 5 critical criteria (5=better, 1=worse)}
   \label{fig:network_barplot}
 \end{figure}
-
 
 \section{Conclusion}
 \label{sec:Coclusion}
@@ -502,6 +479,11 @@ with advancements in sensor technology and data transmission, offer promising av
 and reliability of biologging systems. As we continue to innovate and refine these technologies, the future of 
 wildlife monitoring holds immense potential for gaining deeper insights into animal behavior, and contributing to 
 conservation initiatives.
+
+\subsection{Ethical Considerations}
+\label{sec:Ethical Considerations}
+
+Biologging is
 
 %%
 %% The acknowledgments section is defined using the "acks" environment
