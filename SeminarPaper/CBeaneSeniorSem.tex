@@ -54,8 +54,7 @@
 
 \doclicenseThis
 
-\keywords{IoT, networking, Wi-Fi, data transmission, data collection,
-  animal trackers, Sigfox, WildFi, Biologging, ecology}
+\keywords{IoT, networking, data transmission, animal trackers, Sigfox, LoRa, WildFi, Biologging, ecology}
 
 
 %%
@@ -66,7 +65,7 @@
 \section{Introduction}
 \label{sec:introduction}
 
-The proliferation of the Internet of Things (IoT) has sparked innovation across various domains, including 
+The proliferation of the Internet of Things has sparked innovation across various domains, including 
 wildlife tracking. Understanding the convergence of biologging and IoT technologies is pivotal in comprehending 
 their applications in monitoring animal behavior and ecology. This paper provides a comprehensive overview of 
 the foundational concepts behind biologging and IoT, delving into their intersection and exploring the myriad 
@@ -91,90 +90,67 @@ system.
 Biologging is a concept that gained popularity in the early 2000's and has continued
 to play a pivotal role in understanding animal behavior and ecology. Biologging can be
 defined as "The investigation of phenomena in or around free-ranging organisms that are beyond
-the boundary of our visibility or experience. \cite{boyd2004bio}"
+the boundary of our visibility or experience. \cite{boyd2004bio}" Biologging provides
+insights into the behavior and functions of various organisms in environments that
+can be hostile or difficult to reach for the observer \cite{boyd2004bio}.
 It is a method of tracking animals in the wild using electronic devices that are
 attached to the animal. These devices can be used to track the animal's
-movements, monitor its behavior, and collect data on its environment. Biologging
-emerged as a powerful tool in ecology in a similar way genomics did for the study
-of cell and organ function. The obvious difference being that biologging provides
-insights into the behavior and functions of various organisms in environments that
-can be hostile or difficult to reach for the observer, rather than the function of cells and
-organs \cite{boyd2004bio}. The ability to track animals in their natural environment has
-provided researchers with a wealth of data that was previously unattainable. This data
+movements, monitor its behavior, and collect data on its environment. This data
 has been used to study animal behavior, migration patterns, and the effects of climate change
-on various species\cite{10.3389/fevo.2018.00092}. The data collected from biologging
-devices has also been used to inform conservation efforts and to help protect endangered
-species \cite{cooke2008biotelemetry}. It is important to understand that biologging is
-simply the collection of data from animals in the wild, and it is then up to scientists
-or conservationists to use the data to answer questions about the animals or to inform
-conservation efforts.
+on various species \cite{10.3389/fevo.2018.00092}. The data collected from biologging
+devices is also useful for informing conservation efforts and helping protect endangered
+species \cite{cooke2008biotelemetry}. Importantly, biologging is merely the collection of data, 
+and the interpretation of the data is up to the ecologists and conservationists.
 
 \subsection{What are the Other Biologging Methods?}
 \label{subsec:What are the Other Biologging Methods?}
 
-Various stratagies have been used in the past to track animals in the wild. Many
+Various strategies have been used in the past to track animals in the wild. Many
 implement variations of the same technology within the tracking sensors;
-GPS, accelerometers, and magnetometers are the most common sensors used in
+GPS, accelerometers, magnetometers, and thermometers are the most common sensors used in
 biologging devices. These data from these sensors help researchers understand
 the animal's  speed, direction, and position, which allows for a 3D mapping of
-positions\cite{Kidangoor_2024}. The compilation of this data can be seen in Figure ~\ref{fig:prairie_dog_3D_movement}
-from the Smithsonian's National Zoo and Conservation Biology Institute, which
-shows the 3D movement of a prairie dogs.
-\begin{figure}[htbp]
-  \centering
-  \fbox{\includegraphics[width=.9\columnwidth]{images/prairie_dog_map.jpg}}
-  \caption{3D movement of a prairie dog \cite{Kidangoor_2024}}
-  \label{fig:prairie_dog_3D_movement}
-\end{figure}
-Most biologging trackers will implement these types of sensors, but the
-implementation of these sensors can vary greatly. More importantly, the
-communication of the data from these sensors can vary greatly. One of the
-most popular methods for transmitting data is the use of cellular networks.
+positions\cite{Kidangoor_2024}. I recommend looking at a study done by the Smithsonian's National Zoo and Conservation Biology Institute, which
+tracks the movements of a prairie dogs \cite{Kidangoor_2024}.
+The data transmission methods from these devices can vary greatly. One popular 
+method for transmitting data is the use of cellular networks.
 A study conducted by a professor from UC Irvine tested the use of cellular
 networks to analyze the pollution levels in the San Jose area by using pigeons
 equipped with GPS and automotive emissions sensors \cite{Martin_2006}. Professor
-Da Costa had to pay about 10 cents for each message transmitted, and two
-messages are sent every minute by each pigeon\cite{Martin_2006}. This leads into one of the biggest
+Da Costa had to pay about 250 dollars per device, and 10 cents for each message transmitted \cite{Martin_2006}. 
+This leads into one of the biggest
 disadvantages of using cellular networks: cost. Another obvious disadvantage
-is that cellular networks are not available in all areas, and the range of
-cellular networks is limited. It is also practically impossible for researchers
+is that cellular networks are not available in all areas and it is practically impossible for researchers
 to improve the range of cellular networks by adding more cell towers to cover
 their study area. Radio frequency is another technology that has been used to
 transmit data from biologging devices for decades. The use of radio frequency
-to transmit data from biologging devices requires a receiver to be within range
+to transmit data from biologging devices requires a handheld receiver to be within range
 of the transmitter, and the range of the transmitter is limited by the power of
 the transmitter and the frequency of the radio waves. The receiver and transmitter
 used by Cooke et al. on marine animals had an effective range of 5 to 1000m and 
 is only able to transmit periodic tracking records or time stamped data from loggers
 \cite{cooke2012biotelemetry}. This falls short of the capabilities of IoT enabled 
-biologging devices using LPWAN networks, which are able to transmit data in real time, and can transmit 
-data over much longer distances. 
+biologging devices that are discussed in section ~\ref{sec:Networking}. 
 
-\subsection{What is WLAN?}
-\label{subsec:What is WLAN?}
+\subsection{How do Wireless Networks Transmit Data?}
+\label{subsec:How do Wireless Networks Transmit Data?}
 
 Understanding the basics of how a wireless networks transmits data is important to understanding 
-the reasoning behind using it for biologging. Wireless networks, like WLAN (WiFi), 
-works by encoding data into a binary form so it can be sent across a radio frequency to another 
-wireless enabled device. Ones and zeroes are represented by different amplitudes of radio waves 
-and are received by another device\cite{Ghimire_2023}. There are many frequencies that can 
-be used as a medium to send this data, the most popular being 2.4GHz and 5GHz. However, 6GHz 
-frequencies are becoming more popular for it's ability to transmit data at faster rates. In general, 
-as frequency increases, range is sacrificed for higher data rates\cite{Netgear}. Data rates are 
-higher because the radio waves are being received in higher 
-frequency, meaning more ones and zeroes are being received every second. In 
+how IoT based biologging devices transmit data. Wireless internet networks work by encoding data 
+into binary form. The ones and zeroes are then represented by different amplitudes of radio waves 
+that are sent out to be received by other devices \cite{Ghimire_2023}. There are many frequencies that can 
+be used as a medium to send this data; 2.4GHz and sub 1GHz frequencies will be explored in section ~\ref{sec:Networking}. 
+In general, as frequency increases, range is sacrificed for higher data rates\cite{Netgear}. Data rates are 
+higher because the radio waves are being received in higher frequency, meaning more ones and zeroes are being received every second. In 
 some cases, speed is not everything, and range is more important, in this case, a lower frequency 
-is a better choice. Sub gigahertz(GHz) frequencies are used in LPWAN networks for this reason. They 
-are able to achieve ranges upwards of 40km at the cost of data rates, LPWAN networks are explored futher 
-in section ~\ref{subsec:Low Power Wide Area Networks (LPWAN)}
+is a better choice.
 
 \subsection{What is the Internet of Things?}
 \label{subsec:What is the Internet of Things}
 
 The Internet of Things (IoT) represents a transformative shift in the
 realm of technology, encompassing a vast array of physical objects empowered
-with sensors and software to interact autonomously. These objects collect and
-exchange data through network connectivity. In essence, IoT devices, ranging
+with sensors and software for autonomous interaction. In essence, IoT devices, ranging
 from commonplace gadgets to sophisticated systems, have the capability to
 interface with the internet or communicate wirelessly, thereby facilitating
 seamless integration into various facets of daily life. The IoT has been
@@ -182,19 +158,17 @@ applied to a wide range of fields, including healthcare, agriculture,
 manufacturing, and most important to this paper, wildlife monitoring.
 The fundamental structure of an IoT system is comprised of three
 interconnected layers: the perception layer, the network layer, and the
-application layer\cite{kumar2019internet}. The perception layer is responsible for collecting data
+application layer \cite{kumar2019internet}. The perception layer is responsible for collecting data
 from the environment, which is then transmitted to the application layer via the network layer.
-The transmission layer can use a variety of different methods to transmit data, the two most common being
-ethernet/WiFi, and cellular networks like 5G and LTE\cite{greengard2021internet}. Lastly, the application
+The network layer can use a variety of different methods to transmit data, the two most common being
+ethernet/WiFi, and cellular networks \cite{greengard2021internet}. Lastly, the application
 layer is responsible for doing something with the data, such as graph positional data from an
 animals GPS sensor. The physical implementation of these layers
 can vary greatly, but in general, the perception layer consists of a sensor or device that can
-output a signal to be received by a gateway device(the most common gateway device for
-the average person would be a wireless router). The gateway device is connected to
-the internet using one of the aforementioned methods, and it is responsible for
-receiving the data from the perception layer device and transmitting it to the application
-layer, which could be a database to store the data, or a web application to display
-the data\cite{kumar2019internet}. These three theoretical layers are important in understanding the IoT,
+output a signal to be received by a network layer device (most commonly a wireless router). The gateway device is connected to
+the internet, and is responsible for transmitting it to the application layer, which could be a database to store 
+the data, or a web application to display the data \cite{kumar2019internet}. These three theoretical 
+layers are important in understanding the IoT,
 and how it can be used in wildlife tracking. The Wild-Fi biologging tag, is a prime example 
 of how these three layers are implemented in a biologging device and is visually explained 
 by figure ~\ref{fig:wild-fi_IoT_diagram}.
@@ -218,19 +192,11 @@ for interacting with the environment to collect data and sending it to the netwo
 tasks, four main hardware components work together: antenna, microcontroller, battery and of course, sensor(s). 
 Theses devices can also have optional components that improve it's performance, two that will be discussed in 
 this section are solar energy harvesters and extra local storage. 
-
-\subsubsection{Antenna}
-\label{subsubsec:antenna}
-
 An antenna is a piece of hardware that captures or transmits a radio frequency. These antenna are designed to 
 be compatible with specific frequencies\cite{Sheldon_2023}, and there are many different designs available for 
 purchase with varying prices. The antenna that is used will be determined by what frequency the network of choice 
 uses, the frequencies relevant to the biologging systems discussed in this paper can be found in sections 
 ~\ref{subsec:Traditional Wifi (WLAN)} and ~\ref{subsec:Low Power Wide Area Networks (LPWAN)}.
-
-\subsubsection{Microcontroller}
-\label{subsubsec:Microcontroller}
-
 A microcontroller is necessary in a sensor device so that all the components can work together effectively. The 
 microcontroller is effectively a small computer that receives the data that is collected by the sensors and in 
 many cases supplies power to the sensors as well. When the microcontroller recieves the data from the sensors 
@@ -246,11 +212,7 @@ transmitted due to lack of connection to a gateway, an example can be seen in fi
   \caption{SigFox network infrastructure\cite{wild2023internet}}
   \label{fig:WildFi_microcontroller}
 \end{figure}
-
-\subsubsection{Battery}
-\label{subsubsec:Battery}
-
-A power source is required for all of the components to work. Lithium polymer (liPo) rechargeable batteries and 
+A power source is required for all of the components to work. Lithium polymer (LiPo) rechargeable batteries and 
 dry batteries like AA/AAA/AAA can all be used to power the sensor devices. As long as a battery connector exists 
 for the microcontroller of choice, anything can be used. Size and capacity are important factors to take into 
 consideration when choosing a battery. A small battery format is likely to be preferred to reduce the effects the 
@@ -259,10 +221,6 @@ operation for an extended period of time. A popular strategy used to address thi
 energy harvesters to recharge the batteries; rechargeable batteries are a prerequisite for this setup. This allows 
 for a smaller battery to be used while still maintaining an impressive battery life. How a solar harvester connects 
 with a greater sensor system can be seen in figure ~\ref{fig:WildFi_microcontroller}, [18].
-
-\subsubsection{Sensors}
-\label{subsubsec:Sensors}
-
 A biologging device is just a small computer without at least one sensor attached. There are many different types of 
 sensors with different functions that can be attached to a microcontroller; so long as a given sensor has a way to be 
 connected to a specific microcontroller, it can likely be used. The purpose of all of the various sensors is 
@@ -280,29 +238,17 @@ structure discussed in section ~\ref{subsec:What is the Internet of Things}. Thi
 for shuttling information to and from the perception and application layers. To complete this task, four main 
 hardware components and requirements must be met: RF receiver/transmitter, data forwarding engine, power source, 
 and connection to internet or greater local storage.
-
-\subsubsection{RF receiver/transmitter}
-\label{subsubsec:RF receiver/transmitter}
-
 The RF (Radio Frequency) receiver/transmitter is a crucial component of the gateway device in a biologging system. 
 It serves the purpose of communicating wirelessly with the sensor devices attached to the animals or objects being 
 tracked. These RF modules receive data from the sensor devices and transmit commands or data to them as needed. 
 These devices operate on specific frequencies that will depend on the network that is being used, the frequencies 
 relevant to the biologging systems discussed in this paper can be found in sections ~\ref{subsec:Traditional Wifi 
 (WLAN)} and ~\ref{subsec:Low Power Wide Area Networks (LPWAN)}.
-
-\subsubsection{Data forwarding engine}
-\label{subsubsec:Data forwarding engine}
-
 The data forwarding engine within the gateway device manages the flow of data between the sensor devices and 
 the external networks or storage systems. In some cases, the data forwarding engine may dump data into a local storage 
 device or send it to the cloud via an internet connection. It processes incoming data from the RF receiver/transmitter, 
 applies any necessary protocols or formatting, and forwards it to the appropriate destination. This component may include 
 microcontrollers or specialized chips designed for efficient data handling and network communication.
-
-\subsubsection{Power Source}
-\label{subsubsec:Power Source}
-
 A reliable power source is essential for the uninterrupted operation of the gateway device in a biologging system. 
 Depending on the deployment scenario, power may be supplied through various means, including batteries, solar panels, 
 or grid based power. The choice of power source depends on factors such as the duration of deployment, 
@@ -310,10 +256,6 @@ environmental conditions, resource availability, and power consumption of the ga
 strategies are employed to maximize the device's uptime while minimizing energy consumption and the need for frequent 
 maintenance. The designers of the WildFi tags utilized USB power banks and car batteries to power a gateway device for 
 weeks\cite{wild2023internet}. 
-
-\subsubsection{Internet Connection or Local Storage}
-\label{subsubsec:Internet Connection or Local Storage}
-
 The gateway device must have connectivity to either the internet or local storage to facilitate the transmission and 
 storage of data collected from the sensor devices. In scenarios where real-time monitoring or remote access is required, 
 an internet connection is necessary for transmitting data to cloud-based servers or remote databases. Alternatively, in 
